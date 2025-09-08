@@ -11,9 +11,7 @@ export default function Profile() {
       try {
         setLoading(true);
         const response = await fetch("http://192.168.21.64/api/profiles/2/");
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
         setProfileData(data);
       } catch (err) {
@@ -29,65 +27,70 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <div className="flex-1 bg-white flex justify-center items-center min-h-screen p-6">
-        <p className="text-gray-600">Loading profile...</p>
+      <div className="flex-1 bg-black flex justify-center items-center min-h-screen p-8">
+        <div className="text-center text-white">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-teal-500 mx-auto"></div>
+          <p className="text-gray-400 mt-4">Loading education data...</p>
+        </div>
       </div>
     );
   }
 
   if (!profileData) {
-    return (
-      <div className="flex-1 bg-white flex justify-center items-center min-h-screen p-6">
-        <p className="text-gray-500">No profile data available.</p>
-      </div>
-    );
+    return <div className="flex justify-center items-center min-h-screen">No profile data available.</div>;
   }
 
   const { name, address, phone, email, github, summary, image } = profileData;
 
   // Tentukan URL gambar
   const imageUrl = image
-    ? image.startsWith("http") // full URL dari API
+    ? image.startsWith("http")
       ? image
-      : `http://192.168.21.64${image}` // path dari API
+      : `http://192.168.21.64${image}`
     : null;
 
   return (
-    <div className="flex-1 bg-white flex justify-center items-center min-h-screen p-6">
-      <div className="flex flex-col items-center text-center max-w-md">
-        {error && (
-          <div className="mb-4 p-3 bg-yellow-100 text-yellow-800 rounded text-sm w-full">
-            {error}
+    <div className="flex-1 bg-black text-white flex items-center justify-center min-h-screen px-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center max-w-6xl w-full">
+        
+        {/* Bagian Kiri: Teks */}
+        <div className="space-y-6">
+          <h2 className="text-4xl md:text-5xl font-bold">
+            Hi, I'm <span className="text-green-500">{name}</span>
+          </h2>
+          <h3 className="text-2xl md:text-3xl font-semibold">
+            Software Engineer <br /> FullStack | DevOps
+          </h3>
+          <p className="text-gray-400 leading-relaxed">{summary}</p>
+
+          <div className="space-y-2 text-gray-300">
+            <p>📍 {address}</p>
+            <p>📞 {phone}</p>
+            <p>📧 {email}</p>
           </div>
-        )}
 
-        {imageUrl && (
-          <img
-            src={imageUrl}
-            alt="profile"
-            className="w-40 h-40 rounded-full mb-4 shadow-md object-cover"
-          />
-        )}
-
-        <h1 className="text-2xl font-bold text-teal-600">{name}</h1>
-        <p className="text-gray-500">{address}</p>
-        <p className="text-gray-500">{phone}</p>
-        <p className="text-gray-500">{email}</p>
-
-        <p className="text-gray-600 mb-4">{summary}</p>
-
-        {github && (
-          <div className="flex gap-4 mt-2">
+          {github && (
             <a
               href={github}
-              className="text-teal-600 hover:text-teal-800 text-xl"
               target="_blank"
               rel="noopener noreferrer"
+              className="inline-block border border-green-500 text-green-500 px-5 py-2 rounded-md hover:bg-green-500 hover:text-black transition"
             >
-              💻 Github
+              Contact Me
             </a>
-          </div>
-        )}
+          )}
+        </div>
+
+        {/* Bagian Kanan: Gambar */}
+        <div className="flex justify-center">
+          {imageUrl && (
+            <img
+              src={imageUrl}
+              alt="profile"
+              className="w-72 md:w-[520px] object-contain drop-shadow-2xl transform -scale-x-100"
+            />
+          )}
+        </div>
       </div>
     </div>
   );

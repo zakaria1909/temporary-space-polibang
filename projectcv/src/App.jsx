@@ -7,17 +7,17 @@ import Organization from "./component/organization";
 import Skills from "./component/skills";
 
 export default function App() {
-  const [active, setActive] = useState("Home");
+  const [active, setActive] = useState("profile"); // default kecil semua
 
   const renderContent = () => {
     switch (active) {
-      case "Education":
+      case "education":
         return <Education />;
-      case "Organization":
+      case "organization":
         return <Organization />;
-      case "Skills":
-        return <Skills />; 
-      case "Projects":
+      case "skills":
+        return <Skills />;
+      case "projects":
         return <Projects />;
       default:
         return <Profile />;
@@ -27,7 +27,7 @@ export default function App() {
   return (
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar active={active} setActive={setActive} />
-      <div className="flex-1">{renderContent()}</div>
+      <div className="flex-1 ">{renderContent()}</div>
     </div>
   );
 }

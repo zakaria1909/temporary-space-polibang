@@ -29,7 +29,7 @@ export default function Education() {
       } catch (err) {
         console.error("Educations API Error:", err);
         setError("Failed to load education data from API");
-        setEducations([]); // kosong kalau API gagal
+        setEducations([]);
       } finally {
         setLoading(false);
       }
@@ -40,47 +40,55 @@ export default function Education() {
 
   if (loading) {
     return (
-      <div className="flex-1 bg-white flex justify-center items-center min-h-screen p-8">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-teal-600 mx-auto"></div>
-          <p className="text-gray-600 mt-4">Loading education data...</p>
+      <div className="flex-1 bg-black flex justify-center items-center min-h-screen p-8">
+        <div className="text-center text-white">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-teal-500 mx-auto"></div>
+          <p className="text-gray-400 mt-4">Loading education data...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 bg-white flex justify-center items-center min-h-screen p-8">
-      <div className="max-w-3xl w-full">
-        <h2 className="text-3xl font-bold text-teal-600 mb-6">Education</h2>
+    <div className="flex-1 bg-black text-white flex justify-center items-center min-h-screen p-8">
+      <div className="max-w-4xl w-full">
+        <h2 className="text-3xl font-bold text-teal-400 mb-10 text-center">
+          Education
+        </h2>
 
         {error && (
-          <div className="mb-4 p-3 bg-yellow-100 text-yellow-800 rounded text-sm">
+          <div className="mb-4 p-3 bg-yellow-200/20 text-yellow-400 rounded text-sm text-center">
             {error}
           </div>
         )}
 
         {educations.length === 0 ? (
-          <p className="text-gray-500">No education data available.</p>
+          <p className="text-gray-500 text-center">
+            No education data available.
+          </p>
         ) : (
-          <div className="space-y-4">
-            {educations.map((edu) => (
-              <div
-                key={edu.id}
-                className="p-4 border border-teal-200 rounded-lg shadow-sm hover:shadow-md transition-shadow"
-              >
-                <h3 className="text-lg font-semibold text-teal-700">
-                  {edu.degree}
-                </h3>
-                <p className="text-sm text-gray-500 mb-1">{edu.institution}</p>
-                <p className="text-sm text-gray-600">
-                  {edu.start_year} - {edu.end_year}
-                </p>
-                {edu.gpa && (
-                  <p className="text-sm text-gray-700 mt-1">
-                    <span className="font-semibold">GPA:</span> {edu.gpa}
+          <div className="relative border-l-2 border-teal-600 pl-6 space-y-8">
+            {educations.map((edu, index) => (
+              <div key={edu.id} className="relative">
+                {/* Dot */}
+                <div className="absolute -left-3 top-2 w-5 h-5 bg-teal-500 rounded-full border-4 border-black shadow-lg"></div>
+
+                {/* Card */}
+                <div className="bg-neutral-900 border border-neutral-700 rounded-lg shadow-md p-5 hover:shadow-teal-500/30 transition duration-300">
+                  <h3 className="text-xl font-semibold text-teal-400">
+                    {edu.degree}
+                  </h3>
+                  <p className="text-sm text-gray-400">{edu.institution}</p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    {edu.start_year} - {edu.end_year}
                   </p>
-                )}
+                  {edu.gpa && (
+                    <p className="text-sm text-gray-300 mt-2">
+                      <span className="font-semibold text-white">GPA:</span>{" "}
+                      {edu.gpa}
+                    </p>
+                  )}
+                </div>
               </div>
             ))}
           </div>

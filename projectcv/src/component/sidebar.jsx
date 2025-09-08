@@ -1,42 +1,37 @@
-import React, { useState } from "react";
+import { User, Briefcase, BookOpen, Users, Wrench } from "lucide-react";
 
 export default function Sidebar({ active, setActive }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const menus = ["Profile", "Projects", "Education", "Organization", "Skills"];
+  const menuItems = [
+    { id: "profile", label: "Profile", icon: <User size={22} /> },
+    { id: "projects", label: "Projects", icon: <Briefcase size={22} /> },
+    { id: "education", label: "Education", icon: <BookOpen size={22} /> },
+    { id: "organization", label: "Organization", icon: <Users size={22} /> },
+    { id: "skills", label: "Skills", icon: <Wrench size={22} /> },
+  ];
 
   return (
-    <>
-      {/* Hamburger button for mobile */}
-      <button className="fixed top-4 left-4 z-50 md:hidden p-2 rounded-md bg-teal-600 text-white shadow" onClick={() => setIsOpen(!isOpen)}>
-        ☰
-      </button>
+    <div className="w-16 h-screen bg-neutral-900 flex flex-col items-center py-4">
+      {/* Logo */}
+      <div className="flex flex-col items-center">
+        <div className="text-3xl font-bold text-green-500">Z</div>
+        <span className="text-xs text-gray-200">Zaka</span>
+      </div>
 
-      {/* Sidebar */}
-      <div
-        className={`
-    fixed top-0 left-0 h-screen w-48 bg-teal-600 flex flex-col items-center justify-center pb-10
-    transform transition-transform duration-300
-    ${isOpen ? "translate-x-0" : "-translate-x-full"} 
-    md:translate-x-0 md:flex
-    z-50
-  `}
-      >
-        {menus.map((item) => (
+      {/* Menu */}
+      <div className="flex flex-col gap-6 mt-6 justify-center items-center flex-1">
+        {menuItems.map(item => (
           <button
-            key={item}
-            onClick={() => {
-              setActive(item);
-              setIsOpen(false); // auto close sidebar on mobile
-            }}
-            className={`w-full my-2 text-white text-lg capitalize transition text-center ${active === item ? "opacity-100 font-semibold" : "opacity-60"}`}
+            key={item.id}
+            onClick={() => setActive(item.id)}
+            className={`hover:scale-110 transition-transform ${
+              active === item.id ? "text-yellow-400" : "text-gray-400"
+            }`}
+            title={item.label}
           >
-            {item}
+            {item.icon}
           </button>
         ))}
       </div>
-
-      {/* Overlay */}
-      {isOpen && <div className="fixed inset-0 bg-black opacity-30 z-40 md:hidden" onClick={() => setIsOpen(false)} />}
-    </>
+    </div>
   );
 }

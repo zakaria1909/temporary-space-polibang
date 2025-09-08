@@ -1,5 +1,6 @@
 // component/Skills.jsx
 import React, { useState, useEffect } from "react";
+import { Code, Monitor, Database, Layout, Server } from "lucide-react";
 
 export default function Skills() {
   const [skills, setSkills] = useState([]);
@@ -38,56 +39,87 @@ export default function Skills() {
     fetchSkills();
   }, []);
 
-  const categoryColors = {
-    Programming: "bg-blue-100 text-blue-700",
-    Frontend: "bg-green-100 text-green-700",
-    Backend: "bg-purple-100 text-purple-700",
-    "UI Framework": "bg-pink-100 text-pink-700",
-    Database: "bg-yellow-100 text-yellow-700",
+  const categoryStyles = {
+    Programming: {
+      bg: "from-blue-500/20 to-blue-700/20 border-blue-500/30",
+      text: "text-blue-400",
+      icon: <Code className="w-6 h-6 text-blue-400" />,
+    },
+    Frontend: {
+      bg: "from-green-500/20 to-green-700/20 border-green-500/30",
+      text: "text-green-400",
+      icon: <Monitor className="w-6 h-6 text-green-400" />,
+    },
+    Backend: {
+      bg: "from-purple-500/20 to-purple-700/20 border-purple-500/30",
+      text: "text-purple-400",
+      icon: <Server className="w-6 h-6 text-purple-400" />,
+    },
+    "UI Framework": {
+      bg: "from-pink-500/20 to-pink-700/20 border-pink-500/30",
+      text: "text-pink-400",
+      icon: <Layout className="w-6 h-6 text-pink-400" />,
+    },
+    Database: {
+      bg: "from-yellow-500/20 to-yellow-700/20 border-yellow-500/30",
+      text: "text-yellow-400",
+      icon: <Database className="w-6 h-6 text-yellow-400" />,
+    },
   };
 
   if (loading) {
     return (
-      <div className="flex-1 bg-white flex justify-center items-center min-h-screen p-8">
-        <div className="space-y-2 w-full max-w-2xl">
-          {[...Array(6)].map((_, i) => (
-            <div
-              key={i}
-              className="h-12 bg-gray-200 rounded-lg animate-pulse"
-            ></div>
-          ))}
+      <div className="flex-1 bg-black flex justify-center items-center min-h-screen p-8">
+        <div className="text-center text-white">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-teal-500 mx-auto"></div>
+          <p className="text-gray-400 mt-4">Loading education data...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 bg-white flex justify-center items-start min-h-screen p-8 pt-16">
-      <div className="max-w-4xl w-full text-center">
-        <h2 className="text-3xl font-bold text-teal-600 mb-8">Skills</h2>
+    <div className="flex-1 bg-neutral-900 flex justify-center items-start min-h-screen p-8 pt-16">
+      <div className="max-w-5xl w-full text-center">
+        <h2 className="text-4xl font-extrabold text-teal-400 mb-12 tracking-wide">
+          ⚡ My Skills
+        </h2>
 
         {error && (
-          <div className="mb-6 p-3 bg-yellow-100 text-yellow-800 rounded text-sm">
+          <div className="mb-6 p-3 bg-yellow-900/40 text-yellow-300 rounded text-sm border border-yellow-500/40">
             {error}
           </div>
         )}
 
         {skills.length === 0 ? (
-          <p className="text-gray-500 text-lg">No skills available.</p>
+          <p className="text-gray-400 text-lg">No skills available.</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {skills.map((skill) => {
-              const colorClass = skill.category
-                ? categoryColors[skill.category] || "bg-gray-100 text-gray-700"
-                : "bg-gray-100 text-gray-700";
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            {skills.map((skill, i) => {
+              const style =
+                skill.category && categoryStyles[skill.category]
+                  ? categoryStyles[skill.category]
+                  : {
+                      bg: "from-gray-600/20 to-gray-800/20 border-gray-500/30",
+                      text: "text-gray-300",
+                      icon: <Code className="w-6 h-6 text-gray-300" />,
+                    };
+   
               return (
                 <div
                   key={skill.id}
-                  className={`p-4 rounded-xl shadow hover:shadow-lg transition transform hover:-translate-y-1 ${colorClass}`}
+                  className={`relative p-6 rounded-2xl shadow-lg border backdrop-blur-md bg-gradient-to-br ${style.bg} ${style.text}
+                    transform hover:-translate-y-2 hover:scale-[1.02] transition duration-300 ease-out
+                    animate-fade-in
+                  `}
+                  style={{ animationDelay: `${i * 100}ms` }}
                 >
-                  <h3 className="text-lg font-semibold">{skill.name}</h3>
+                  <div className="flex items-center justify-center mb-4">
+                    {style.icon}
+                  </div>
+                  <h3 className="text-xl font-semibold">{skill.name}</h3>
                   {skill.category && (
-                    <span className="text-sm mt-1 inline-block bg-white/30 px-2 py-1 rounded-full">
+                    <span className="text-sm mt-2 inline-block bg-white/10 px-3 py-1 rounded-full">
                       {skill.category}
                     </span>
                   )}
